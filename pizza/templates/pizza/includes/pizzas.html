@@ -1,17 +1,21 @@
 {% load static %}
+{% load image_filter %}
 
 {% for pizza in objects %}
     <a href="{{ pizza.get_absolute_url }}">
         <div class="col mb-4">
             <div class="card">
-                <img src="..." class="card-img-top" alt="...">
+                {% if pizza.image|is_exists %}
+                    <img src="{{ pizza.image.url }}" class="card-img-top main-content" alt="...">
+                {% else %}
+                    <img src="{% static 'pizza/image/pizza?.png' %}" class="card-img-top main-content" alt="...">
+                {% endif %}
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This card has supporting text below as a natural lead-in to additional
-                        content.</p>
+                    <h5 class="card-title">{{ pizza.title|title }}</h5>
+                    <p class="card-text">{{ pizza.description|truncatechars:128}}</p>
                 </div>
                 <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
+                    <p class="text-muted">Цена: {{ pizza.price|truncatechars:30 }}</p>
                 </div>
             </div>
         </div>
