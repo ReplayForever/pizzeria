@@ -14,5 +14,8 @@ class ListPizza(View):
 
         return render(
             request,
-            self.included_html
+            'pizza/index.html',
+            context={
+                'objects': objects
+            }
         )
