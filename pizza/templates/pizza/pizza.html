@@ -4,7 +4,7 @@
 
 
 {% block title %}
-    Пицца - {{ block.super }}
+    {{ pizza.title }}
 {% endblock %}
 
 {% block body %}
@@ -21,5 +21,8 @@
         <div class="card-footer">
             <p class="text-muted">Цена: {{ pizza.price|truncatechars:30 }}</p>
         </div>
+    </div>
+    <div class="mx-auto" style="width: 200px;">
+        <button type="button" class="btn btn-primary btn-lg" style="width: 200px;">Добавить в корзину</button>
     </div>
 {% endblock %}
