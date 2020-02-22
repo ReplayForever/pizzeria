@@ -22,7 +22,19 @@
             <p class="text-muted">Цена: {{ pizza.price|truncatechars:30 }}</p>
         </div>
     </div>
-    <div class="mx-auto" style="width: 200px;">
-        <button type="button" class="btn btn-primary btn-lg" style="width: 200px;">Добавить в корзину</button>
-    </div>
+    {% if user.is_authenticated %}
+        <form action="{% url "cart:cart_add" pizza.id %}" method="post">
+            <div class="mx-auto" style="width: 200px;">
+                {{ cart_product_form }}
+                {% csrf_token %}
+                <input type="submit" value="Добавить в корзину">
+            </div>
+        </form>
+    {% else %}
+
+        <div class="mx-auto" style="width: 200px;">
+            <a class="btn btn-primary btn-lg" href="/login/">Добавить в корзину</a>
+        </div>
+    {% endif %}
+
 {% endblock %}

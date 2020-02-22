@@ -16,22 +16,27 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 from django.views.generic import TemplateView, FormView
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 from django.contrib.auth.models import User
 from django import forms
-from django.db import models
+# from django.db import models
+
+
+# class PizzaUser(models.Model, User):
+#     user = models.OneToOneField(User)
+#     number = models.IntegerField(max_length=12, blank=True)
+#     address = models.CharField(max_length=100, blank=True)
 
 
 class PizzaUserCreationForm(UserCreationForm):
-    number = models.CharField(max_length=9, blank=True)
-    address = models.CharField(max_length=100, blank=True)
 
     class Meta:
         model = User
 
-        fields = ('username', 'first_name', 'email',)
+        fields = ('username', 'first_name', 'email')
         field_classes = {
             'username': UsernameField
         }
@@ -54,8 +59,11 @@ class RegisterUser(FormView):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('cart/', include('cart.urls'), name='cart'),
     path('', TemplateView.as_view(template_name='index.html')),
     path('pizza/', include('pizza.urls')),
     path('', include('django.contrib.auth.urls')),
     path('register/', RegisterUser.as_view(), name='register')
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

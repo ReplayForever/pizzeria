@@ -7,7 +7,7 @@
             <div class="col mb-4">
                 <div class="card">
                     {% if pizza.image|is_exists %}
-                        <img src="{{ pizza.image }}" class="card-img-top main-content" alt="...">
+                        <img src="{{ pizza.image.url }}" class="card-img-top main-content" alt="...">
                     {% else %}
                         <img src="{% static 'pizza/image/pizza?.png' %}" class="card-img-top main-content" alt="...">
                     {% endif %}
@@ -18,7 +18,16 @@
                     <div class="card-footer">
                         <p class="text-muted">Цена: {{ pizza.price|truncatechars:30 }}</p>
                     </div>
-                    <button type="button" class="btn btn-primary btn-sm">Добавить в корзину</button>
+
+                    {% if user.is_authenticated %}
+                        <form action="{% url "cart:cart_add" pizza.id %}" method="post">
+                            {{ cart_product_form }}
+                            {% csrf_token %}
+                            <input type="submit" value="Добавить в корзину">
+                        </form>
+                    {% else %}
+                        <a class="btn btn-primary btn-lg" href="/login/">Добавить в корзину</a>
+                    {% endif %}
                 </div>
             </div>
         </a>
